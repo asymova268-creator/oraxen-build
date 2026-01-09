@@ -21,28 +21,26 @@ java {
 
 repositories {
     mavenCentral()
-
     maven("https://papermc.io/repo/repository/maven-public/") // Paper
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
-    maven("https://oss.sonatype.org/content/repositories/snapshots") // Because Spigot depends on Bungeecord ChatComponent-API
     maven("https://jitpack.io") // JitPack
     maven("https://repo.mineinabyss.com/releases") // ModelEngine
     maven("https://repo.dmulloy2.net/repository/public/") // ProtocolLib
-    maven("https://libraries.minecraft.net/") // Minecraft repo (commodore)
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceHolderAPI
+    maven("https://libraries.minecraft.net/") // Minecraft repo
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
     maven("https://maven.elmakers.com/repository/") // EffectLib
     maven("https://hub.jeff-media.com/nexus/repository/jeff-media-public/") // CustomBlockData
     maven("https://repo.triumphteam.dev/snapshots") // actions-code, actions-spigot
     maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots") // commandAPI snapshots
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots") // CommandAPI snapshots
     maven("https://maven.enginehub.org/repo/")
 }
 
 dependencies {
     val actionsVersion = "1.0.0-SNAPSHOT"
 
-    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
-    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT") { exclude(group = "net.kyori") }
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") { exclude(group = "net.kyori") }
     compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0-SNAPSHOT")
     compileOnly("com.github.Hazebyte:CrateReloadedAPI:d7ae2a14c6")
     compileOnly("com.github.jojodmo:ItemBridge:-SNAPSHOT")
@@ -94,11 +92,10 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.19.3")
+        minecraftVersion("1.18.2")
     }
 
     shadowJar {
-        //archiveClassifier = null
         relocate("org.bstats", "io.th0rgal.oraxen.shaded.bstats")
         relocate("net.kyori", "io.th0rgal.oraxen.shaded.kyori")
         relocate("dev.triumphteam.gui", "io.th0rgal.oraxen.shaded.triumphteam.gui")
@@ -110,7 +107,6 @@ tasks {
         relocate("org.intellij.lang.annotations", "io.th0rgal.oraxen.shaded.intellij.annotations")
         relocate("org.jetbrains.annotations", "io.th0rgal.oraxen.shaded.jetbrains.annotations")
         relocate("com.udojava.evalex", "io.th0rgal.oraxen.shaded.evalex")
-        //mapOf("dir" to "libs/compile", "include" to listOf("*.jar"))
         manifest {
             attributes(
                 mapOf(
@@ -138,6 +134,7 @@ publishing {
     }
 }
 
+// Автоматическое копирование JAR в папку плагина, если задан путь
 val pluginPath = project.findProperty("oraxen_plugin_path")
 if (pluginPath != null) {
     tasks {
